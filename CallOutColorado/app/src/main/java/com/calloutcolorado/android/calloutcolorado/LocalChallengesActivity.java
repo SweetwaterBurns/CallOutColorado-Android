@@ -4,13 +4,15 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LocalChallengesActivity extends ActionBarActivity {
+public class LocalChallengesActivity extends FragmentActivity {
 // http://wptrafficanalyzer.in/blog/storing-and-retrieving-locations-in-sqlite-from-google-maps-android-api-v2/
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -18,8 +20,11 @@ public class LocalChallengesActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setUpMapIfNeeded();
+        Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
+        String[] items = new String[]{"ConnectCO", "Events", "Profile"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dropdown.setAdapter(adapter);
 	}
     /*@Override
     protected void onMenuCreate()
