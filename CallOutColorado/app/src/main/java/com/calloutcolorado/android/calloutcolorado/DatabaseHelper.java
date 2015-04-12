@@ -30,8 +30,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			"DROP TABLE IF EXISTS " + ChallengeEntry.TABLE_NAME;
 	private final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
+	private SQLiteDatabase challengesDb;
+
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.challengesDb = getWritableDatabase();
 		Log.d(LOG_TAG, "Helper Initialized");
 	}
 
@@ -53,8 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 
-	public Cursor getAll(SQLiteDatabase db){
-		return db.query(
+	public Cursor getAll(){
+		return this.challengesDb.query(
 				ChallengeEntry.TABLE_NAME,
 				new String[] {
 						ChallengeEntry._ID,
@@ -65,24 +68,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				, null, null, null, null, null);
 	}
 
-	public void add(Challenge challenge) {
+	public long add(ContentValues values) {
 
 		Log.d("Adding Challenge to DB", "Yep");
 
-		SQLiteDatabase db = getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, challenge.latitude);
-		values.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, challenge.longitude);
-		values.put(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION, challenge.short_desc);
-		values.put(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION, challenge.long_desc);
+		//SQLiteDatabase db = getWritableDatabase();
+		//ContentValues values = new ContentValues();
+		//values.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, challenge.latitude);
+		//values.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, challenge.longitude);
+		//values.put(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION, challenge.short_desc);
+		//values.put(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION, challenge.long_desc);
 
-		db.insert(
+		long rowId = this.challengesDb.insert(
 				DatabaseContract.ChallengeEntry.TABLE_NAME,
 				null,
 				values);
-		db.close();
+		return rowId;
 	}
 
+	public void del(){
+		challengesDb.execSQL(SQL_DELETE_ENTRIES);
+	}
 
 /*
 	public Challenge retrieve(int challengeid) {

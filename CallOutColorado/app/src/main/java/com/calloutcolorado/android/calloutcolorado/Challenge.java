@@ -35,11 +35,12 @@ public class Challenge implements Parcelable{
 	public int describeContents() {
 		return 0;
 	}
-
+/*
 	public void save(DatabaseHelper dbhelper) {
+		ContentValues
 		dbhelper.add(this);
 	}
-
+*/
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeDouble(this.latitude);

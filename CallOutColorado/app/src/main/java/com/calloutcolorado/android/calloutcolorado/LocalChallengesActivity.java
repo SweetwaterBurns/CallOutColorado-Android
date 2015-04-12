@@ -1,10 +1,18 @@
 package com.calloutcolorado.android.calloutcolorado;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -12,7 +20,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LocalChallengesActivity extends FragmentActivity {
+public class LocalChallengesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 	private UiSettings mapSettings;
 	Challenge testChallenge = new Challenge();
@@ -22,6 +30,8 @@ public class LocalChallengesActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
 		setUpMapIfNeeded();
+
+
 	}
 
 	@Override
@@ -71,6 +81,57 @@ public class LocalChallengesActivity extends FragmentActivity {
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
+		mMap.setMyLocationEnabled(true);
+		mapSettings = mMap.getUiSettings();
+		mapSettings.setZoomControlsEnabled(true);
+
+		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+			@Override
+			public void onMapClick(LatLng point) {
+
+				// Drawing marker on the map
+				drawMarker(point);
+
+				// Creating an instance of ContentValues
+				ContentValues contentValues = new ContentValues();
+
+				// Setting latitude in ContentValues
+				contentValues.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, point.latitude );
+
+				// Setting longitude in ContentValues
+				contentValues.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, point.longitude);
+				// Setting Title (short description) in ContentValues
+				contentValues.put(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION, "This is Here");
+				// Setting snippet (Long description) in ContentValues
+				contentValues.put(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION, "Now you know.");
+				// Creating an instance of LocationInsertTask
+				LocationInsertTask insertTask = new LocationInsertTask();
+
+				// Storing the latitude, longitude and zoom level to SQLite database
+				insertTask.execute(contentValues);
+
+				Toast.makeText(getBaseContext(), "Marker is added to the Map", Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+			@Override
+			public void onMapLongClick(LatLng point) {
+
+				// Removing all markers from the Google Map
+				mMap.clear();
+
+				// Creating an instance of ChallengesDeleteTask
+				ChallengesDeleteTask deleteTask = new ChallengesDeleteTask();
+
+				// Deleting all the rows from SQLite database table
+				deleteTask.execute();
+
+				Toast.makeText(getBaseContext(), "All markers are removed", Toast.LENGTH_LONG).show();
+			}
+		});
+
 		testChallenge.longitude = -104.7167;
 		testChallenge.latitude = 40.4167;
 		testChallenge.short_desc = "Greeley";
@@ -125,4 +186,93 @@ public class LocalChallengesActivity extends FragmentActivity {
 			);
 		}
 	}
+
+	private void drawMarker(LatLng point){
+		// Creating an instance of MarkerOptions
+		MarkerOptions markerOptions = new MarkerOptions();
+
+		// Setting latitude and longitude for the marker
+		markerOptions.position(point);
+
+		// Adding marker on the Google Map
+		mMap.addMarker(markerOptions);
+	}
+
+	private class LocationInsertTask extends AsyncTask<ContentValues, Void, Void>{
+		@Override
+		protected Void doInBackground(ContentValues... contentValues) {
+
+			/** Setting up values to insert the clicked location into SQLite database */
+			getContentResolver().insert(ChallengesContentProvider.CONTENT_URI, contentValues[0]);
+			return null;
+		}
+	}
+
+	private class ChallengesDeleteTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			/** Deleting all the locations stored in SQLite database */
+			getContentResolver().delete(ChallengesContentProvider.CONTENT_URI, null, null);
+			return null;
+		}
+	}
+
+
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		// Uri to the content provider LocationsContentProvider
+		Uri uri = ChallengesContentProvider.CONTENT_URI;
+		// Fetches all the rows from locations table
+		return new CursorLoader(this, uri, null, null, null, null);
+	}
+
+
+	public void onLoadFinished(Loader<Cursor> arg0,
+	                           Cursor arg1) {
+		int locationCount = 0;
+		double lat = 0;
+		double lng = 0;
+		float zoom = 0;
+
+		// Number of locations available in the SQLite database table
+		locationCount = arg1.getCount();
+
+		// Move the current record pointer to the first row of the table
+		arg1.moveToFirst();
+
+		for(int i=0;i<locationCount;i++){
+
+			// Get the latitude
+			lat = arg1.getDouble(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.COLUMN_LAT));
+
+			// Get the longitude
+			lng = arg1.getDouble(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.COLUMN_LNG));
+
+			// Get the zoom level
+			zoom = 13;
+
+			// Creating an instance of LatLng to plot the location in Google Maps
+			LatLng location = new LatLng(lat, lng);
+
+			// Drawing the marker in the Google Maps
+			drawMarker(location);
+
+			// Traverse the pointer to the next row
+			arg1.moveToNext();
+		}
+
+		if(locationCount>0){
+			// Moving CameraPosition to last clicked position
+			mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
+
+			// Setting the zoom level in the map on last position  is clicked
+			mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO Auto-generated method stub
+	}
+
 }
