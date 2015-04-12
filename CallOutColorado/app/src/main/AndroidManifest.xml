@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomActionBarTheme" >
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -23,17 +23,26 @@
 
         <activity
             android:name=".LocalChallengesActivity"
-            android:label="@string/title_activity_local_challenges" >
+            android:label="@string/title_activity_local_challenges"
+            android:theme="@style/CustomActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <provider
             android:authorities="com.calloutcolorado.android.calloutcolorado"
             android:name="ChallengesContentProvider"
             android:exported="false"/>
+=======
+        <activity
+            android:name=".profilePageActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/title_activity_profile_page" >
+        </activity>
+>>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
     </application>
 
 </manifest>
