@@ -8,7 +8,7 @@
 
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@mipmap/image3</item>
+        <item name="android:background">@mipmap/image1</item>
 	</style>
 
 </resources>

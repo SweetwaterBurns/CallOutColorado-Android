@@ -1,9 +1,15 @@
 package com.calloutcolorado.android.calloutcolorado;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -18,25 +24,47 @@ public class LocalChallengesActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_local_challenges);
-		setUpMapIfNeeded();
-        Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_local_challenges);
+        Object value;
+        setUpMapIfNeeded();
+        Spinner dropdown = (Spinner) findViewById(R.id.spinner1);
         String[] items = new String[]{"ConnectCO", "Events", "Profile"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dropdown.setAdapter(adapter);
-	}
-    /*@Override
-    protected void onMenuCreate()
-    {
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               Log.d("Hiya","Please work!");
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        //Intent intent = new Intent(getApplicationContext(), );
+                        Log.d("Debug", "Debugging2");
+                        break;
+                    case 2:
+                        Log.d("Debug", "Debugging");
+                        Intent intent = new Intent(getApplicationContext(), profilePageActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }  Log.d("Debug", "Debugging3");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
-*/
-	@Override
-	protected void onResume() {
-		super.onResume();
-		setUpMapIfNeeded();
-	}
+
+
 
 	/**
 	 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -75,4 +103,10 @@ public class LocalChallengesActivity extends FragmentActivity {
 	private void setUpMap() {
 		mMap.addMarker(new MarkerOptions().position(new LatLng(-104, 40)).title("Greeley"));
 	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+    }
 }
