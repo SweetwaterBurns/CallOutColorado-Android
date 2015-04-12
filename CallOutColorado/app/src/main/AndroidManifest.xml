@@ -30,6 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.calloutcolorado.android.calloutcolorado"
+            android:name="ChallengesContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

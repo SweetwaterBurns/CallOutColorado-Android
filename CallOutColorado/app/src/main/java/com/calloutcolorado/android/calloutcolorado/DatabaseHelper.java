@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					ChallengeEntry.COLUMN_LAT + DOUBLE_TYPE + COMMA_SEP +
 					ChallengeEntry.COLUMN_LNG + DOUBLE_TYPE + COMMA_SEP +
 					ChallengeEntry.SHORT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-					ChallengeEntry.LONG_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+					ChallengeEntry.LONG_DESCRIPTION + TEXT_TYPE +
 					" )";
 	private static final String SQL_DELETE_ENTRIES =
 			"DROP TABLE IF EXISTS " + ChallengeEntry.TABLE_NAME;

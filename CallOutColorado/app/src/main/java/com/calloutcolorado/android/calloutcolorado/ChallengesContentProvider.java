@@ -9,7 +9,7 @@ import android.database.SQLException;
 import android.net.Uri;
 
 public class ChallengesContentProvider extends ContentProvider {
-	public static final String PROVIDER_NAME = "com.calloutcolorado";
+	public static final String PROVIDER_NAME = "com.calloutcolorado.android.calloutcolorado";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/locations" );
 	/** Constant to identify the requested operation */
 	private static final int LOCATIONS = 1;
