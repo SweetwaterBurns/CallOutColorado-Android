@@ -10,6 +10,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,12 +20,14 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocalChallengesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 	private UiSettings mapSettings;
 	Challenge testChallenge = new Challenge();
+	GoogleMap.InfoWindowAdapter infoWindowAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 			mMap.setMyLocationEnabled(true);
 			mapSettings = mMap.getUiSettings();
 			mapSettings.setZoomControlsEnabled(true);
+			//mMap.setInfoWindowAdapter(infoWindowAdapter);
 		}
 	}
 
@@ -84,6 +89,41 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		mMap.setMyLocationEnabled(true);
 		mapSettings = mMap.getUiSettings();
 		mapSettings.setZoomControlsEnabled(true);
+		infoWindowAdapter = new GoogleMap.InfoWindowAdapter() {
+			@Override
+			public View getInfoWindow(Marker marker) {
+				return null;
+			}
+
+			@Override
+			public View getInfoContents(Marker marker) {
+
+				// Getting view from the layout file info_window_layout
+				View v = getLayoutInflater().inflate(R.layout.challenge_info_window, null);
+
+				// Getting the position from the marker
+				LatLng latLng = marker.getPosition();
+
+
+				// Getting reference to the TextView to set latitude
+				TextView short_desc = (TextView) v.findViewById(R.id.short_desc);
+
+				// Getting reference to the TextView to set longitude
+				TextView long_desc = (TextView) v.findViewById(R.id.long_desc);
+
+				// Setting the latitude
+				short_desc.setText("Latitude:" + latLng.latitude);
+
+				// Setting the longitude
+				long_desc.setText("Longitude:" + latLng.longitude);
+
+				// Returning the view containing InfoWindow contents
+				return v;
+
+			}
+		};
+
+		mMap.setInfoWindowAdapter(infoWindowAdapter);
 
 		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -229,10 +269,12 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 
 	public void onLoadFinished(Loader<Cursor> arg0,
 	                           Cursor arg1) {
-		int locationCount = 0;
+		int locationCount;
 		double lat = 0;
 		double lng = 0;
 		float zoom = 0;
+		String short_desc;
+		String long_desc;
 
 		// Number of locations available in the SQLite database table
 		locationCount = arg1.getCount();
@@ -248,6 +290,10 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 			// Get the longitude
 			lng = arg1.getDouble(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.COLUMN_LNG));
 
+			short_desc = arg1.getString(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION));
+
+			long_desc = arg1.getString(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION));
+
 			// Get the zoom level
 			zoom = 13;
 
@@ -255,9 +301,12 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 			LatLng location = new LatLng(lat, lng);
 
 			// Drawing the marker in the Google Maps
-			drawMarker(location);
+			mMap.addMarker(new MarkerOptions()
+					.position(location)
+					.title(short_desc)
+					.snippet(long_desc));
 
-			// Traverse the pointer to the next row
+		// Traverse the pointer to the next row
 			arg1.moveToNext();
 		}
 
