@@ -1,7 +1,10 @@
 package com.calloutcolorado.android.calloutcolorado;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -17,6 +20,10 @@ public class LocalChallengesActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
 		setUpMapIfNeeded();
+        Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
+        String[] items = new String[]{"ConnectCO", "Profile", "Events"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
 	}
 
 	@Override
