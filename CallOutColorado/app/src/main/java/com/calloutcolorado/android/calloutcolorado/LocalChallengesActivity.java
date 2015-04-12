@@ -1,16 +1,21 @@
 package com.calloutcolorado.android.calloutcolorado;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocalChallengesActivity extends FragmentActivity {
-// http://wptrafficanalyzer.in/blog/storing-and-retrieving-locations-in-sqlite-from-google-maps-android-api-v2/
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+	private UiSettings mapSettings;
+	Challenge testChallenge = new Challenge();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,12 @@ public class LocalChallengesActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
+
+		if (mMap != null) {
+			mMap.setMyLocationEnabled(true);
+			mapSettings = mMap.getUiSettings();
+			mapSettings.setZoomControlsEnabled(true);
+		}
 	}
 
 	/**
@@ -60,6 +71,59 @@ public class LocalChallengesActivity extends FragmentActivity {
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
-		mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+		testChallenge.longitude = (float) -104.7167;
+		testChallenge.latitude = (float) 40.4167;
+		testChallenge.short_desc = "Greeley";
+		testChallenge.long_desc = "The Home of Boredom";
+		testChallenge.zoom = 8;
+		addMarker(testChallenge);
+	}
+
+	/**
+	 * Initialises the mapview
+	 */
+	private void createMapView(){
+		/**
+		 * Catch the null pointer exception that
+		 * may be thrown when initialising the map
+		 */
+		try {
+			if(null == mMap){
+				mMap = ((MapFragment) getFragmentManager().findFragmentById(
+						R.id.map)).getMap();
+
+				/**
+				 * If the map is still null after attempted initialisation,
+				 * show an error to the user
+				 */
+				if(null == mMap) {
+					Toast.makeText(getApplicationContext(),
+							"Error creating map", Toast.LENGTH_SHORT).show();
+				}
+			}
+		} catch (NullPointerException exception){
+			Log.e("mapApp", exception.toString());
+		}
+	}
+
+	/**
+	 * Adds a marker to the map
+	 */
+	private void addMarker(Challenge challenge){
+
+		float latitude = challenge.latitude;
+		float longitude = challenge.longitude;
+		String title = challenge.short_desc;
+		String snippet = challenge.long_desc;
+
+		/** Make sure that the map has been initialised **/
+		if(null != mMap){
+			mMap.addMarker(new MarkerOptions()
+							.position(new LatLng(latitude, longitude))
+							.title(title)
+							.snippet(snippet)
+							.draggable(true)
+			);
+		}
 	}
 }

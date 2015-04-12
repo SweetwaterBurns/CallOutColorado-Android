@@ -1,32 +1,33 @@
+package com.calloutcolorado.android.calloutcolorado;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import com.calloutcolorado.android.calloutcolorado.DatabaseContract;
-
-import java.util.ArrayList;
+import com.calloutcolorado.android.calloutcolorado.DatabaseContract.ChallengeEntry;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public static final String TEXT_TYPE = " TEXT";
+	public static final String FLOAT_TYPE = " REAL";
+	public static final String INT_TYPE = " INTEGER";
 	public static final String COMMA_SEP = " , ";
 	public static final String DATABASE_NAME = "challenges.db";
 	public static final int DATABASE_VERSION = 1;
 
 	private static final String SQL_CREATE_ENTRIES =
 			"CREATE TABLE " + DatabaseContract.ChallengeEntry.TABLE_NAME + " (" +
-					DatabaseContract.ChallengeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-					DatabaseContract.ChallengeEntry.COLUMN_LAT + TEXT_TYPE + COMMA_SEP +
-					DatabaseContract.ChallengeEntry.COLUMN_LNG + TEXT_TYPE + COMMA_SEP +
-					DatabaseContract.ChallengeEntry.COLUMN_ZOOM + TEXT_TYPE + COMMA_SEP +
-					DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-					DatabaseContract.ChallengeEntry.LONG_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+					ChallengeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+					ChallengeEntry.COLUMN_LAT + FLOAT_TYPE + COMMA_SEP +
+					ChallengeEntry.COLUMN_LNG + FLOAT_TYPE + COMMA_SEP +
+					ChallengeEntry.COLUMN_ZOOM + INT_TYPE + COMMA_SEP +
+					ChallengeEntry.SHORT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+					ChallengeEntry.LONG_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 					" )";
 	private static final String SQL_DELETE_ENTRIES =
-			"DROP TABLE IF EXISTS " + DatabaseContract.ChallengeEntry.TABLE_NAME;
+			"DROP TABLE IF EXISTS " + ChallengeEntry.TABLE_NAME;
 	private final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
 	public DatabaseHelper(Context context) {
@@ -50,39 +51,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		onUpgrade(db, oldVersion, newVersion);
 	}
-/*
+
+
+	public Cursor getAll(SQLiteDatabase db){
+		return db.query(ChallengeEntry.TABLE_NAME, new String[] { ChallengeEntry._ID,  ChallengeEntry.COLUMN_LAT, ChallengeEntry.COLUMN_LNG, ChallengeEntry.COLUMN_ZOOM, ChallengeEntry.SHORT_DESCRIPTION, ChallengeEntry.LONG_DESCRIPTION} , null, null, null, null, null);
+	}
+
 	public void add(Challenge challenge) {
 
-		Log.d("Adding Fortune to DB", "Yep");
+		Log.d("Adding Challenge to DB", "Yep");
 
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(ChallengeEntry.COLUMN_NAME_FORTUNE, fortune.fortune);
-		values.put(ChallengeEntry.COLUMN_NAME_ENGLISH, fortune.english);
-		values.put(ChallengeEntry.COLUMN_NAME_CHINESE, fortune.chinese);
-		values.put(ChallengeEntry.COLUMN_NAME_PRO, fortune.pro);
-		values.put(ChallengeEntry.COLUMN_NAME_LAT, fortune.lat);
-		values.put(ChallengeEntry.COLUMN_NAME_LONG, fortune.lon);
-
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO1, fortune.lotto[0]);
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO2, fortune.lotto[1]);
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO3, fortune.lotto[2]);
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO4, fortune.lotto[3]);
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO5, fortune.lotto[4]);
-		values.put(ChallengeEntry.COLUMN_NAME_LOTTO6, fortune.lotto[5]);
-
-		//Log.d("Stored Lotto", fortune.lotto.toString());
+		values.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, challenge.latitude);
+		values.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, challenge.longitude);
+		values.put(DatabaseContract.ChallengeEntry.COLUMN_ZOOM, challenge.zoom);
+		values.put(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION, challenge.short_desc);
+		values.put(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION, challenge.long_desc);
 
 		db.insert(
 				DatabaseContract.ChallengeEntry.TABLE_NAME,
 				null,
 				values);
 		db.close();
-
-
 	}
 
-
+/*
 	public Challenge retrieve(int challengeid) {
 		Fortune loadedFortune = new Fortune();
 

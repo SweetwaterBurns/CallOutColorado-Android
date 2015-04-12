@@ -10,10 +10,10 @@ public class DatabaseContract {
 	}
 
 	public static abstract class ChallengeEntry implements BaseColumns {
-		public static final String COLUMN_LAT = "lat";
-		public static final String COLUMN_LNG = "lng";
-		public static final String COLUMN_ZOOM = "zom";
 		public static final String TABLE_NAME = "challenges";
+		public static final String COLUMN_LAT = "latitude";
+		public static final String COLUMN_LNG = "longitude";
+		public static final String COLUMN_ZOOM = "zoom";
 		public static final String SHORT_DESCRIPTION = "short_desc";
 		public static final String LONG_DESCRIPTION = "long_desc";
 	}
