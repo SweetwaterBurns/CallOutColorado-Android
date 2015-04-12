@@ -1,5 +1,6 @@
 package com.calloutcolorado.android.calloutcolorado;
 
+<<<<<<< HEAD
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+=======
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+>>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +46,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+<<<<<<< HEAD
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
 		setUpMapIfNeeded();
@@ -50,6 +66,49 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 			//mMap.setInfoWindowAdapter(infoWindowAdapter);
 		}
 	}
+=======
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_local_challenges);
+        Object value;
+        setUpMapIfNeeded();
+        Spinner dropdown = (Spinner) findViewById(R.id.spinner1);
+        String[] items = new String[]{"ConnectCO", "Events", "Profile"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               Log.d("Hiya","Please work!");
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        //Intent intent = new Intent(getApplicationContext(), );
+                        Log.d("Debug", "Debugging2");
+                        break;
+                    case 2:
+                        Log.d("Debug", "Debugging");
+                        Intent intent = new Intent(getApplicationContext(), profilePageActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }  Log.d("Debug", "Debugging3");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+>>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
 
 	/**
 	 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -86,6 +145,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
+<<<<<<< HEAD
 		mMap.setMyLocationEnabled(true);
 		mapSettings = mMap.getUiSettings();
 		mapSettings.setZoomControlsEnabled(true);
@@ -324,4 +384,14 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		// TODO Auto-generated method stub
 	}
 
+=======
+		mMap.addMarker(new MarkerOptions().position(new LatLng(-104, 40)).title("Greeley"));
+	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+    }
+>>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
 }
