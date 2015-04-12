@@ -1,7 +1,7 @@
 package com.calloutcolorado.android.calloutcolorado;
 
-<<<<<<< HEAD
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,22 +12,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-=======
-import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
->>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,13 +35,42 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-<<<<<<< HEAD
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
 		setUpMapIfNeeded();
+		Spinner dropdown = (Spinner) findViewById(R.id.spinner1);
+		String[] items = new String[]{"ConnectCO", "Events", "Profile"};
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+		dropdown.setAdapter(adapter);
+		dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Log.d("Hiya", "Please work!");
+				switch (position) {
+					case 0:
+						break;
+					case 1:
+						//Intent intent = new Intent(getApplicationContext(), );
+						Log.d("Debug", "Debugging2");
+						break;
+					case 2:
+						Log.d("Debug", "Debugging");
+						Intent intent = new Intent(getApplicationContext(), profilePageActivity.class);
+						startActivity(intent);
+						break;
+					default:
+						break;
+				}
+				Log.d("Debug", "Debugging3");
+			}
 
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
 
+			}
+		});
 	}
+
 
 	@Override
 	protected void onResume() {
@@ -66,49 +84,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 			//mMap.setInfoWindowAdapter(infoWindowAdapter);
 		}
 	}
-=======
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_challenges);
-        Object value;
-        setUpMapIfNeeded();
-        Spinner dropdown = (Spinner) findViewById(R.id.spinner1);
-        String[] items = new String[]{"ConnectCO", "Events", "Profile"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
-
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               Log.d("Hiya","Please work!");
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        //Intent intent = new Intent(getApplicationContext(), );
-                        Log.d("Debug", "Debugging2");
-                        break;
-                    case 2:
-                        Log.d("Debug", "Debugging");
-                        Intent intent = new Intent(getApplicationContext(), profilePageActivity.class);
-                        startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }  Log.d("Debug", "Debugging3");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-
->>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
 
 	/**
 	 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -145,7 +121,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		mMap.setMyLocationEnabled(true);
 		mapSettings = mMap.getUiSettings();
 		mapSettings.setZoomControlsEnabled(true);
@@ -197,7 +173,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 				ContentValues contentValues = new ContentValues();
 
 				// Setting latitude in ContentValues
-				contentValues.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, point.latitude );
+				contentValues.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, point.latitude);
 
 				// Setting longitude in ContentValues
 				contentValues.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, point.longitude);
@@ -242,13 +218,13 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 	/**
 	 * Initialises the mapview
 	 */
-	private void createMapView(){
+	private void createMapView() {
 		/**
 		 * Catch the null pointer exception that
 		 * may be thrown when initialising the map
 		 */
 		try {
-			if(null == mMap){
+			if (null == mMap) {
 				mMap = ((MapFragment) getFragmentManager().findFragmentById(
 						R.id.map)).getMap();
 
@@ -256,12 +232,12 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 				 * If the map is still null after attempted initialisation,
 				 * show an error to the user
 				 */
-				if(null == mMap) {
+				if (null == mMap) {
 					Toast.makeText(getApplicationContext(),
 							"Error creating map", Toast.LENGTH_SHORT).show();
 				}
 			}
-		} catch (NullPointerException exception){
+		} catch (NullPointerException exception) {
 			Log.e("mapApp", exception.toString());
 		}
 	}
@@ -269,7 +245,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 	/**
 	 * Adds a marker to the map
 	 */
-	private void addMarker(Challenge challenge){
+	private void addMarker(Challenge challenge) {
 
 		Double latitude = challenge.latitude;
 		Double longitude = challenge.longitude;
@@ -277,7 +253,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		String snippet = challenge.long_desc;
 
 		/** Make sure that the map has been initialised **/
-		if(null != mMap){
+		if (null != mMap) {
 			mMap.addMarker(new MarkerOptions()
 							.position(new LatLng(latitude, longitude))
 							.title(title)
@@ -287,7 +263,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		}
 	}
 
-	private void drawMarker(LatLng point){
+	private void drawMarker(LatLng point) {
 		// Creating an instance of MarkerOptions
 		MarkerOptions markerOptions = new MarkerOptions();
 
@@ -298,7 +274,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		mMap.addMarker(markerOptions);
 	}
 
-	private class LocationInsertTask extends AsyncTask<ContentValues, Void, Void>{
+	private class LocationInsertTask extends AsyncTask<ContentValues, Void, Void> {
 		@Override
 		protected Void doInBackground(ContentValues... contentValues) {
 
@@ -342,7 +318,7 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		// Move the current record pointer to the first row of the table
 		arg1.moveToFirst();
 
-		for(int i=0;i<locationCount;i++){
+		for (int i = 0; i < locationCount; i++) {
 
 			// Get the latitude
 			lat = arg1.getDouble(arg1.getColumnIndex(DatabaseContract.ChallengeEntry.COLUMN_LAT));
@@ -366,11 +342,11 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 					.title(short_desc)
 					.snippet(long_desc));
 
-		// Traverse the pointer to the next row
+			// Traverse the pointer to the next row
 			arg1.moveToNext();
 		}
 
-		if(locationCount>0){
+		if (locationCount > 0) {
 			// Moving CameraPosition to last clicked position
 			mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
 
@@ -384,14 +360,5 @@ public class LocalChallengesActivity extends FragmentActivity implements LoaderM
 		// TODO Auto-generated method stub
 	}
 
-=======
-		mMap.addMarker(new MarkerOptions().position(new LatLng(-104, 40)).title("Greeley"));
-	}
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
->>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
 }
+

@@ -31,18 +31,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
         <provider
             android:authorities="com.calloutcolorado.android.calloutcolorado"
             android:name="ChallengesContentProvider"
             android:exported="false"/>
-=======
+
         <activity
             android:name=".profilePageActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/title_activity_profile_page" >
         </activity>
->>>>>>> d2a84f672cd3698948193256005c00ad276dffc0
     </application>
-
 </manifest>
