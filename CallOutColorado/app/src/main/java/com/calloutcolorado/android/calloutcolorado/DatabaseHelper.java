@@ -6,12 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import com.calloutcolorado.android.calloutcolorado.DatabaseContract.ChallengeEntry;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public static final String TEXT_TYPE = " TEXT";
-	public static final String FLOAT_TYPE = " REAL";
+	public static final String DOUBLE_TYPE = " REAL";
 	public static final String INT_TYPE = " INTEGER";
 	public static final String COMMA_SEP = " , ";
 	public static final String DATABASE_NAME = "challenges.db";
@@ -20,9 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String SQL_CREATE_ENTRIES =
 			"CREATE TABLE " + DatabaseContract.ChallengeEntry.TABLE_NAME + " (" +
 					ChallengeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-					ChallengeEntry.COLUMN_LAT + FLOAT_TYPE + COMMA_SEP +
-					ChallengeEntry.COLUMN_LNG + FLOAT_TYPE + COMMA_SEP +
-					ChallengeEntry.COLUMN_ZOOM + INT_TYPE + COMMA_SEP +
+					ChallengeEntry.COLUMN_LAT + DOUBLE_TYPE + COMMA_SEP +
+					ChallengeEntry.COLUMN_LNG + DOUBLE_TYPE + COMMA_SEP +
 					ChallengeEntry.SHORT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 					ChallengeEntry.LONG_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 					" )";
@@ -54,7 +54,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 	public Cursor getAll(SQLiteDatabase db){
-		return db.query(ChallengeEntry.TABLE_NAME, new String[] { ChallengeEntry._ID,  ChallengeEntry.COLUMN_LAT, ChallengeEntry.COLUMN_LNG, ChallengeEntry.COLUMN_ZOOM, ChallengeEntry.SHORT_DESCRIPTION, ChallengeEntry.LONG_DESCRIPTION} , null, null, null, null, null);
+		return db.query(
+				ChallengeEntry.TABLE_NAME,
+				new String[] {
+						ChallengeEntry._ID,
+						ChallengeEntry.COLUMN_LAT,
+						ChallengeEntry.COLUMN_LNG,
+						ChallengeEntry.SHORT_DESCRIPTION,
+						ChallengeEntry.LONG_DESCRIPTION}
+				, null, null, null, null, null);
 	}
 
 	public void add(Challenge challenge) {
@@ -65,7 +73,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseContract.ChallengeEntry.COLUMN_LAT, challenge.latitude);
 		values.put(DatabaseContract.ChallengeEntry.COLUMN_LNG, challenge.longitude);
-		values.put(DatabaseContract.ChallengeEntry.COLUMN_ZOOM, challenge.zoom);
 		values.put(DatabaseContract.ChallengeEntry.SHORT_DESCRIPTION, challenge.short_desc);
 		values.put(DatabaseContract.ChallengeEntry.LONG_DESCRIPTION, challenge.long_desc);
 
@@ -75,6 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				values);
 		db.close();
 	}
+
 
 /*
 	public Challenge retrieve(int challengeid) {

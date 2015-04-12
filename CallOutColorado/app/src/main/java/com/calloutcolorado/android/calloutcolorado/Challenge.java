@@ -10,8 +10,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
  */
 public class Challenge implements Parcelable{
 
-	public Float latitude;
-	public Float longitude;
+	public Double latitude;
+	public Double longitude;
 	public int zoom;
 	public String short_desc;
 	public String long_desc;
@@ -24,8 +24,8 @@ public class Challenge implements Parcelable{
 	}
 
 	public Challenge(Parcel in) {
-		this.latitude = in.readFloat();
-		this.longitude = in.readFloat();
+		this.latitude = in.readDouble();
+		this.longitude = in.readDouble();
 		this.zoom = in.readInt();
 		this.short_desc = in.readString();
 		this.long_desc = in.readString();
@@ -42,8 +42,8 @@ public class Challenge implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeFloat(this.latitude);
-		dest.writeFloat(this.longitude);
+		dest.writeDouble(this.latitude);
+		dest.writeDouble(this.longitude);
 		dest.writeInt(this.zoom);
 		dest.writeString(this.short_desc);
 		dest.writeString(this.long_desc);

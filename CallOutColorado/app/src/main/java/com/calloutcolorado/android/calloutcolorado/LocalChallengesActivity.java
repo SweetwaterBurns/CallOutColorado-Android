@@ -71,11 +71,10 @@ public class LocalChallengesActivity extends FragmentActivity {
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
-		testChallenge.longitude = (float) -104.7167;
-		testChallenge.latitude = (float) 40.4167;
+		testChallenge.longitude = -104.7167;
+		testChallenge.latitude = 40.4167;
 		testChallenge.short_desc = "Greeley";
 		testChallenge.long_desc = "The Home of Boredom";
-		testChallenge.zoom = 8;
 		addMarker(testChallenge);
 	}
 
@@ -111,8 +110,8 @@ public class LocalChallengesActivity extends FragmentActivity {
 	 */
 	private void addMarker(Challenge challenge){
 
-		float latitude = challenge.latitude;
-		float longitude = challenge.longitude;
+		Double latitude = challenge.latitude;
+		Double longitude = challenge.longitude;
 		String title = challenge.short_desc;
 		String snippet = challenge.long_desc;
 
