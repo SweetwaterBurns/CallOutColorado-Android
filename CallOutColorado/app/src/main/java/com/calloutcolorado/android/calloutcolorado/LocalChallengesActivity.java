@@ -2,13 +2,15 @@ package com.calloutcolorado.android.calloutcolorado;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Window;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LocalChallengesActivity extends FragmentActivity {
+public class LocalChallengesActivity extends ActionBarActivity {
 // http://wptrafficanalyzer.in/blog/storing-and-retrieving-locations-in-sqlite-from-google-maps-android-api-v2/
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -16,9 +18,15 @@ public class LocalChallengesActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_challenges);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setUpMapIfNeeded();
 	}
+    /*@Override
+    protected void onMenuCreate()
+    {
 
+    }
+*/
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -60,6 +68,6 @@ public class LocalChallengesActivity extends FragmentActivity {
 	 * This should only be called once and when we are sure that {@link #mMap} is not null.
 	 */
 	private void setUpMap() {
-		mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+		mMap.addMarker(new MarkerOptions().position(new LatLng(-104, 40)).title("Greeley"));
 	}
 }
