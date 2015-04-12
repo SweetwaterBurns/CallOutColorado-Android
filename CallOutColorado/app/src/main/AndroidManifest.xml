@@ -26,19 +26,14 @@
             android:value="@string/google_maps_key" />
 
         <activity
+
             android:name=".LocalChallengesActivity"
-            android:label="@string/title_activity_local_challenges"
-            android:theme="@style/CustomActionBarTheme">
+            android:label="@string/title_activity_local_challenges" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".profilePageActivity"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:label="@string/title_activity_profile_page" >
         </activity>
     </application>
 
